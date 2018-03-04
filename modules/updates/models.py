@@ -12,8 +12,11 @@ def upload_update_image(instance, filename):
 
 class UpdateQueryset(models.QuerySet):
     def serialize(self):
-        qs = self
-        return serialize('json', qs, fields=('user', 'content', 'image'))
+        # qs = self
+        # return serialize('json', qs, fields=('user', 'content', 'image'))
+        list_values = list(self.values("user","content","image", "id"))
+        return json.dumps(list_values)
+
 
 class UpdateManager(models.Manager):
     def get_queryset(self):
@@ -32,10 +35,17 @@ class Update(models.Model):
         return self.content or ""
 
     def serialize(self):
-        json_data = serialize("json",[self], fields=('user','content','image'))
-        struct = json.loads(json_data)  # [{}]
-        print(struct)
-        data = json.dumps(struct[0]['fields'])
+        try:
+            image = self.image.url
+        except:
+            image = ""            
+        data = {
+            "id": self.id,
+            "content": self.content,
+            "user": self.user.id,
+            "image": image
+        }
+        data = json.dumps(data)
         return data
 
 
