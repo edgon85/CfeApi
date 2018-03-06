@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -35,3 +35,13 @@ class StatusAPIView(ListAPIView):
             qs = qs.filter(content__icontains=query)
         return qs
 
+
+class StatusCreateAPIView(CreateAPIView):
+    permission_classes      = []
+    authentication_classes  = []
+
+    queryset                = Status.objects.all()
+    serializer_class        = StatusSerializer
+
+    # def perform_create(serlf, serializer):
+    #     serializer.save(user=self.request.user)
