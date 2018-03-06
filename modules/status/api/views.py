@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework import generics 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -21,7 +21,7 @@ class StatusListSearchAPIView(APIView):
         return Response(serializer.data)
 
 
-class StatusAPIView(ListAPIView):
+class StatusAPIView(generics.ListAPIView):
     permission_classes      = []
     authentication_classes  = []
 
@@ -36,7 +36,7 @@ class StatusAPIView(ListAPIView):
         return qs
 
 
-class StatusCreateAPIView(CreateAPIView):
+class StatusCreateAPIView(generics.CreateAPIView):
     permission_classes      = []
     authentication_classes  = []
 
@@ -45,3 +45,20 @@ class StatusCreateAPIView(CreateAPIView):
 
     # def perform_create(serlf, serializer):
     #     serializer.save(user=self.request.user)
+
+
+class StatusDetailAPIView(generics.RetrieveAPIView):
+    permission_classes      = []
+    authentication_classes  = []
+
+    queryset                = Status.objects.all()
+    serializer_class        = StatusSerializer
+    lookup_field            = 'id'  # 'slug'
+
+    # class get_object(self, *args, **kwargs):
+    #     '''
+    #     Es lo mismo que lookup_field
+    #     '''
+    #     kwargs  = self.kwargs
+    #     kw_id   = kwargs.get('id')
+    #     return Status.objects.get(id=kw_id) 
