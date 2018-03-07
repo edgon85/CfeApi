@@ -1,7 +1,9 @@
 import json
-
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, mixins
+
+from rest_framework import generics, mixins, permissions
+from rest_framework.authentication import SessionAuthentication
+
 from modules.status.models import Status
 from .serializer import StatusSerializer
 
@@ -48,22 +50,25 @@ class StatusDetailAPIView(
 class StatusAPIView(
     mixins.CreateModelMixin,
     generics.ListAPIView):
-    permission_classes      = []
-    authentication_classes  = []
+    permission_classes      = [permissions.IsAuthenticatedOrReadOnly]
+    authentication_classes  = [SessionAuthentication]
     passed_id               = None
     serializer_class        = StatusSerializer
 
     def get_queryset(self):
         request = self.request
+        print(request.user)
         qs = Status.objects.all()
         query = self.request.GET.get('q')
         if query is not None:
             qs = qs.filter(content__icontains=query)
         return qs
 
-
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 
 
