@@ -1,4 +1,4 @@
-from rest_framework import generics 
+from rest_framework import generics, mixins
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -21,7 +21,11 @@ class StatusListSearchAPIView(APIView):
         return Response(serializer.data)
 
 
-class StatusAPIView(generics.ListAPIView):
+# CreateModelMixin ---- POST method
+# UpdateModelMixin ---- PUT method 
+# DestroyModelMixin ---- DELETE Method
+
+class StatusAPIView(mixins.CreateModelMixin, generics.ListAPIView):
     permission_classes      = []
     authentication_classes  = []
 
@@ -35,25 +39,34 @@ class StatusAPIView(generics.ListAPIView):
             qs = qs.filter(content__icontains=query)
         return qs
 
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
-class StatusCreateAPIView(generics.CreateAPIView):
-    permission_classes      = []
-    authentication_classes  = []
+# class StatusDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
+#     permission_classes      = []
+#     authentication_classes  = []
 
-    queryset                = Status.objects.all()
-    serializer_class        = StatusSerializer
-
-    # def perform_create(serlf, serializer):
-    #     serializer.save(user=self.request.user)
+#     queryset                = Status.objects.all()
+#     serializer_class        = StatusSerializer
+#     lookup_field            = 'id'  # 'slug'
 
 
-class StatusDetailAPIView(generics.RetrieveAPIView):
+class StatusDetailAPIView(generics.RetrieveAPIView, mixins.UpdateModelMixin, mixins.DestroyModelMixin):
     permission_classes      = []
     authentication_classes  = []
 
     queryset                = Status.objects.all()
     serializer_class        = StatusSerializer
     lookup_field            = 'id'  # 'slug'
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def patch(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+    
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
     # class get_object(self, *args, **kwargs):
     #     '''
@@ -63,19 +76,32 @@ class StatusDetailAPIView(generics.RetrieveAPIView):
     #     kw_id   = kwargs.get('id')
     #     return Status.objects.get(id=kw_id) 
 
-class StatusUpdateAPIView(generics.UpdateAPIView):
-    permission_classes      = []
-    authentication_classes  = []
-
-    queryset                = Status.objects.all()
-    serializer_class        = StatusSerializer
-    lookup_field            = 'id'  # 'slug'
 
 
-class StatusDeleteAPIView(generics.DestroyAPIView):
-    permission_classes      = []
-    authentication_classes  = []
+# class StatusCreateAPIView(generics.CreateAPIView):
+#     permission_classes      = []
+#     authentication_classes  = []
 
-    queryset                = Status.objects.all()
-    serializer_class        = StatusSerializer
-    lookup_field            = 'id'  # 'slug'
+#     queryset                = Status.objects.all()
+#     serializer_class        = StatusSerializer
+
+#     # def perform_create(serlf, serializer):
+#     #     serializer.save(user=self.request.user)
+
+
+# class StatusUpdateAPIView(generics.UpdateAPIView):
+#     permission_classes      = []
+#     authentication_classes  = []
+
+#     queryset                = Status.objects.all()
+#     serializer_class        = StatusSerializer
+#     lookup_field            = 'id'  # 'slug'
+
+
+# class StatusDeleteAPIView(generics.DestroyAPIView):
+#     permission_classes      = []
+#     authentication_classes  = []
+
+#     queryset                = Status.objects.all()
+#     serializer_class        = StatusSerializer
+#     lookup_field            = 'id'  # 'slug'
