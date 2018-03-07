@@ -4,14 +4,14 @@ from .views import (
     StatusAPIView,
     StatusCreateAPIView,
     StatusDetailAPIView,
-    # StatusUpdateAPIView,
-    # StatusDeleteAPIView,
+    StatusUpdateAPIView,
+    StatusDeleteAPIView,
 )
 
 urlpatterns = [
     path('', StatusAPIView.as_view()),
     path('create/', StatusCreateAPIView.as_view()),
-    re_path(r'^(?P<id>.*)/$', StatusDetailAPIView.as_view()),
-    # re_path(r'^(?P<id>.*)/update/$', StatusUpdateAPIView.as_view()),
-    # re_path(r'^(?P<id>.*)/delete/$', StatusDeleteAPIView.as_view()),
+    re_path(r'^(?P<id>\d+)/$', StatusDetailAPIView.as_view()),
+    re_path(r'^(?P<id>\d+)/update/$', StatusUpdateAPIView.as_view()),
+    re_path(r'^(?P<id>\d+)/delete/$', StatusDeleteAPIView.as_view()),
 ]
