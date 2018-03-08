@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from modules.updates.views import (
     json_example_view, 
@@ -27,10 +28,6 @@ urlpatterns = [
     path('api/status/', include('modules.status.api.urls')),
     path('api/updates/', include('modules.updates.api.urls')), # api/updates/ --> list api/updates/1/  --> detail 
 
-
-    # path('json/example/', json_example_view),
-    # path('json/cbv/', JsonCBV.as_view()),
-    # path('json/cbv2/', JsonCBV2.as_view()),
-    # path('json/serialized/list/', SerializedListView.as_view()),
-    # path('json/serialized/detail/', SerializedDetailView.as_view()),
+    path('api/auth/jwt/', obtain_jwt_token),  #acounts 
+    path('api/auth/jwt/refresh/', refresh_jwt_token),  
 ]
