@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     #local
     'modules.updates',
     'modules.status',
+    'modules.accounts'
 ]
 
 MIDDLEWARE = [
