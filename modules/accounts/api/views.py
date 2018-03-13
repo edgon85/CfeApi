@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
 
 from .serializer import UserRegisterSerializer
+from .permissions import AnonPermissionOnly
 
 
 jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
@@ -19,7 +20,7 @@ User = get_user_model()
 
 
 class AuthAPIView(APIView):
-    permission_classes          = [permissions.AllowAny]
+    permission_classes          = [AnonPermissionOnly]
 
     def post(self, request, *args, **kwargs):
         if request.user.is_authenticated:
@@ -47,7 +48,7 @@ class AuthAPIView(APIView):
 class RegisterAPIView(generics.CreateAPIView):
     queryset                = User.objects.all()
     serializer_class        = UserRegisterSerializer
-    permission_classes      = [permissions.AllowAny]
+    permission_classes      = [AnonPermissionOnly]
 
     def get_serializer_context(self, *args, **kwargs):
         return {"request": self.request}
