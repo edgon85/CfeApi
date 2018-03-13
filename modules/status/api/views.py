@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, mixins, permissions
 from rest_framework.authentication import SessionAuthentication
 
+from modules.accounts.api.permissions import IsOwnerOrReadOnly
 from modules.status.models import Status
 from .serializer import StatusSerializer
 
@@ -28,7 +29,7 @@ class StatusDetailAPIView(
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin, 
     generics.RetrieveAPIView):
-    permission_classes      = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes      = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class        = StatusSerializer
     queryset                = Status.objects.all()
     lookup_field            = 'id'

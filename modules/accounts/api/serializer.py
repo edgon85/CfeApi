@@ -63,7 +63,7 @@ class UserRegisterSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         pw  = data.get('password')
-        pw2 = data.pop('password')
+        pw2 = data.pop('password2')
         if pw != pw2:
             raise serializers.ValidationError('Passwords must match.')
         return data
