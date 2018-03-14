@@ -27,5 +27,6 @@ urlpatterns = [
     path('api/status/', include('modules.status.api.urls')),
     path('api/updates/', include('modules.updates.api.urls')), # api/updates/ --> list api/updates/1/  --> detail 
     path('api/auth/', include('modules.accounts.api.urls')),
+    path('api/user/', include('modules.accounts.api.user.urls'), name='api-user'),
  
 ]
