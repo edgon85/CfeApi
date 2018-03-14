@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from modules.status.models import Status
+from modules.accounts.api.serializer import UserPublicSerializer
 
 '''
 JSON -- JavaScript Object Notation
 '''
 
 class StatusSerializer(serializers.ModelSerializer):
-    
+    user = UserPublicSerializer(read_only=True)
+
     class Meta:
         model = Status
         fields = [
