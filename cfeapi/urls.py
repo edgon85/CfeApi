@@ -25,7 +25,9 @@ from modules.updates.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/status/', include('modules.status.api.urls')),
+    path('api/status/', include('modules.status.api.urls', namespace='api-status')),
     path('api/updates/', include('modules.updates.api.urls')), # api/updates/ --> list api/updates/1/  --> detail 
     path('api/auth/', include('modules.accounts.api.urls')),
+    path('api/user/', include('modules.accounts.api.user.urls', namespace='api_user')),
+ 
 ]

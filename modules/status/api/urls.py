@@ -8,9 +8,10 @@ from .views import (
     # StatusDeleteAPIView,
 )
 
+app_name = 'api-status'
 urlpatterns = [
     path('', StatusAPIView.as_view()),
-    re_path(r'^(?P<id>\d+)/$', StatusDetailAPIView.as_view()),
+    re_path(r'^(?P<id>\d+)/$', StatusDetailAPIView.as_view(), name='detail'),
     # re_path(r'^(?P<id>\d+)/update/$', StatusUpdateAPIView.as_view()),
     # re_path(r'^(?P<id>\d+)/delete/$', StatusDeleteAPIView.as_view()),
 ]

@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import generics, mixins, permissions
 from rest_framework.authentication import SessionAuthentication
 
+from modules.accounts.api.permissions import IsOwnerOrReadOnly
 from modules.status.models import Status
 from .serializer import StatusSerializer
 
@@ -28,7 +29,7 @@ class StatusDetailAPIView(
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin, 
     generics.RetrieveAPIView):
-    permission_classes      = [permissions.IsAuthenticatedOrReadOnly]
+    permission_classes      = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class        = StatusSerializer
     queryset                = Status.objects.all()
     lookup_field            = 'id'
@@ -50,15 +51,18 @@ class StatusAPIView(
     permission_classes      = [permissions.IsAuthenticatedOrReadOnly]
     passed_id               = None
     serializer_class        = StatusSerializer
+    search_fields           = ('user__username', 'content')
+    ordering_fields         = ('user__username', 'timestamp')
+    queryset                = Status.objects.all()
 
-    def get_queryset(self):
-        request = self.request
-        print(request.user)
-        qs = Status.objects.all()
-        query = self.request.GET.get('q')
-        if query is not None:
-            qs = qs.filter(content__icontains=query)
-        return qs
+    # def get_queryset(self):
+    #     request = self.request
+    #     print(request.user)
+    #     qs = Status.objects.all()
+    #     query = self.request.GET.get('q')
+    #     if query is not None:
+    #         qs = qs.filter(content__icontains=query)
+    #     return qs
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
