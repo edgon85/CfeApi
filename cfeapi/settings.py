@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     #Third party
     'rest_framework',
+    'corsheaders',
     #local
     'modules.updates',
     'modules.status',
@@ -49,6 +50,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -136,3 +138,4 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static-server' ,'media_roo
 MEDIA_URL = '/media/'
 
 from cfeapi.restconf.main import *
+from cfeapi.corsconf import *
