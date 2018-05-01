@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from rest_framework.documentation import include_docs_urls
 
 from modules.updates.views import (
     json_example_view, 
@@ -26,7 +27,8 @@ from modules.updates.views import (
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
-    path('api/', TemplateView.as_view(template_name='api-home.html'), name='home'),
+    # path('api/', TemplateView.as_view(template_name='api-home.html'), name='home'),
+    path('api/', include_docs_urls(title='Dj Ionic APIs')),
     path('api/status/', include('modules.status.api.urls', namespace='api-status')),
     path('api/updates/', include('modules.updates.api.urls')), # api/updates/ --> list api/updates/1/  --> detail 
     path('api/auth/', include('modules.accounts.api.urls')),
