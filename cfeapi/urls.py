@@ -25,7 +25,8 @@ from modules.updates.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='base.html'), name='home'),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    path('api/', TemplateView.as_view(template_name='api-home.html'), name='home'),
     path('api/status/', include('modules.status.api.urls', namespace='api-status')),
     path('api/updates/', include('modules.updates.api.urls')), # api/updates/ --> list api/updates/1/  --> detail 
     path('api/auth/', include('modules.accounts.api.urls')),
